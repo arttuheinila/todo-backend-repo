@@ -1,9 +1,11 @@
 const pool = require('../db');
 
 exports.createTodo = async (req, res) => {
-    const { content } = req.body;
+    const { content, is_completed = false } = req.body;
     // userId is extracted from JWT after successful authentication
-    const userId = req.user.id; 
+    // const userId = req.user.id; 
+// Temporary bypass for testing!!**
+    const userId = 1;
 
     if (!content) {
         return res.status(400).send('Content is required');
@@ -11,8 +13,8 @@ exports.createTodo = async (req, res) => {
 
     try {
         const newTodo = await pool.query(
-            'Insert INTO todos (content, user_id) VALUES ($1, $2) RETURNING *',
-            [content, userId]
+            'Insert INTO todos (content, is_completed, user_id) VALUES ($1, $2, $3) RETURNING *',
+            [content, is_completed, userId]
         );
         res.status(201).json(newTodo.rows[0]);
     } catch (err) {
@@ -23,7 +25,9 @@ exports.createTodo = async (req, res) => {
 
 // Retrieve all To-Dos for a user
 exports.getAllTodos = async (req, res) => {
-    const userId = req.user.id;
+    // const userId = req.user.id;
+// Temporary bypass for testing!!**
+    const userId = 1;
 
     try {
         const allTodos = await pool.query(
@@ -41,11 +45,14 @@ exports.getAllTodos = async (req, res) => {
 exports.updateTodo = async (req, res) => {
     const { id } = req.params;
     const { content, is_completed } = req.body;
-    const userId = req.user.id;
+    // const userId = req.user.id;
+// Temporary bypass for testing!!**
+const userId = 1;
+
 
     try {
         const updatedTodo = await pool.query(
-            'UPDATE todos SET content $1, is_completed = $2 WHERE id = $3 AND user_id = $4 RETURNING *',
+            'UPDATE todos SET content = $1, is_completed = $2 WHERE id = $3 AND user_id = $4 RETURNING *',
             [content, is_completed, id, userId]
         );
 
@@ -63,7 +70,10 @@ exports.updateTodo = async (req, res) => {
 // Delete an existing To-Do
 exports.deleteTodo = async (req, res) => {
     const { id } = req.params;
-    const userId = req.user.id;
+    // const userId = req.user.id;
+    // Temporary bypass for testing!!**
+    const userId = 1;
+
 
     try {
         const deleteOp = await pool.query(

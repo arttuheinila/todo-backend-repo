@@ -1,10 +1,11 @@
 const express = require('express');
 const todoController = require('../controllers/todoController');
-const authenticateToken = require('../middleware/authenticateToken');
 const router = express.Router();
+const authenticateToken = require('../middleware/authenticateToken');
 
 // Applying the authenticateToken middleware to all routes to protect them
-router.use(authenticateToken);
+// **COMMENT OUT FOR TESTING
+// router.use(authenticateToken);
 
 router.post('/', todoController.createTodo);
 router.get('/', todoController.getAllTodos);
