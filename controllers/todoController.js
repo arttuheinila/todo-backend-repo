@@ -3,9 +3,7 @@ const pool = require('../db');
 exports.createTodo = async (req, res) => {
     const { content, is_completed = false } = req.body;
     // userId is extracted from JWT after successful authentication
-    // const userId = req.user.id; 
-// Temporary bypass for testing!!**
-    const userId = 1;
+    const userId = req.user.id; 
 
     if (!content) {
         return res.status(400).send('Content is required');
@@ -25,9 +23,7 @@ exports.createTodo = async (req, res) => {
 
 // Retrieve all To-Dos for a user
 exports.getAllTodos = async (req, res) => {
-    // const userId = req.user.id;
-// Temporary bypass for testing!!**
-    const userId = 1;
+    const userId = req.user.id;
 
     try {
         const allTodos = await pool.query(
@@ -45,10 +41,7 @@ exports.getAllTodos = async (req, res) => {
 exports.updateTodo = async (req, res) => {
     const { id } = req.params;
     const { content, is_completed } = req.body;
-    // const userId = req.user.id;
-// Temporary bypass for testing!!**
-const userId = 1;
-
+    const userId = req.user.id;
 
     try {
         const updatedTodo = await pool.query(
@@ -70,10 +63,7 @@ const userId = 1;
 // Delete an existing To-Do
 exports.deleteTodo = async (req, res) => {
     const { id } = req.params;
-    // const userId = req.user.id;
-    // Temporary bypass for testing!!**
-    const userId = 1;
-
+    const userId = req.user.id;
 
     try {
         const deleteOp = await pool.query(
