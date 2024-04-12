@@ -3,7 +3,7 @@ const pool = require('../db');
 exports.createTodo = async (req, res) => {
     const { content, is_completed = false } = req.body;
     // userId is extracted from JWT after successful authentication
-    const userId = req.user.id; 
+    const userId = req.user.userId; 
 
     if (!content) {
         return res.status(400).send('Content is required');
@@ -16,14 +16,17 @@ exports.createTodo = async (req, res) => {
         );
         res.status(201).json(newTodo.rows[0]);
     } catch (err) {
-        console.error(err.message);
+        console.error("Error when creating todo:", err.message);
+        if (err.code === '23502') { // not-null violation
+            console.error("Detail:", err.detail);
+        }
         res.status(500).send('Server error');
-    }
+    }    
 };
 
 // Retrieve all To-Dos for a user
 exports.getAllTodos = async (req, res) => {
-    const userId = req.user.id;
+    const userId = req.user.userId; 
 
     try {
         const allTodos = await pool.query(
@@ -39,9 +42,8 @@ exports.getAllTodos = async (req, res) => {
 
 // Update an existing To-Do
 exports.updateTodo = async (req, res) => {
-    const { id } = req.params;
-    const { content, is_completed } = req.body;
-    const userId = req.user.id;
+    console.log('Logged in user from token:', req.user);
+    const userId = req.user.userId; 
 
     try {
         const updatedTodo = await pool.query(
@@ -62,8 +64,9 @@ exports.updateTodo = async (req, res) => {
 
 // Delete an existing To-Do
 exports.deleteTodo = async (req, res) => {
-    const { id } = req.params;
-    const userId = req.user.id;
+    const userId = req.user.userId; 
+    //     const { id } = req.params;
+    //  const userId = req.user.id; 
 
     try {
         const deleteOp = await pool.query(
