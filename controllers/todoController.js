@@ -66,8 +66,7 @@ exports.updateTodo = async (req, res) => {
 exports.deleteTodo = async (req, res) => {
     const userId = req.user.userId; 
     //     const { id } = req.params;
-    //  const userId = req.user.id; 
-
+ 
     try {
         const deleteOp = await pool.query(
             'DELETE FROM todos WHERE id = $1 AND user_id = $2 RETURNING *',
