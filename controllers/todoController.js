@@ -27,7 +27,7 @@ exports.createTodo = async (req, res) => {
 // Retrieve all To-Dos for a user
 exports.getAllTodos = async (req, res) => {
     const userId = req.user.userId; 
-
+    // const userId = 5
     try {
         const allTodos = await pool.query(
             'SELECT * FROM todos WHERE user_id = $1',
@@ -42,30 +42,34 @@ exports.getAllTodos = async (req, res) => {
 
 // Update an existing To-Do
 exports.updateTodo = async (req, res) => {
+    const userId = req.user.userId;
+    const { id } = req.params;
+    const { content, is_completed } = req.body;
+
     console.log('Logged in user from token:', req.user);
-    const userId = req.user.userId; 
+    console.log('Request body:', req.body);
+    console.log('Request params:', req.params);
 
     try {
-        const updatedTodo = await pool.query(
+        const result = await pool.query(
             'UPDATE todos SET content = $1, is_completed = $2 WHERE id = $3 AND user_id = $4 RETURNING *',
             [content, is_completed, id, userId]
         );
 
-        if (updatedTodo.rows.length === 0) {
-            res.status(404).send('Todo not found');
+        if (result.rows.length === 0) {
+            return res.status(404).json({ message: "Todo not found or user mismatch" });
         }
 
-        res.status(200).json(updatedTodo.rows[0]);
+        res.status(200).json(result.rows[0]);
     } catch (err) {
-        console.error(err.message);
-        res.status(500).send('Server error');
+        console.error('Update error:', err.message);
+        res.status(500).json({ message: 'Server error during todo update' });
     }
 };
-
 // Delete an existing To-Do
 exports.deleteTodo = async (req, res) => {
     const userId = req.user.userId; 
-    //     const { id } = req.params;
+        const { id } = req.params;
  
     try {
         const deleteOp = await pool.query(
