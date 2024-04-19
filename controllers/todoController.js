@@ -1,7 +1,7 @@
 const pool = require('../db');
 
 exports.createTodo = async (req, res) => {
-    const { content, is_completed = false } = req.body;
+    const { content, is_completed = false, is_starred = false } = req.body;
     // userId is extracted from JWT after successful authentication
     const userId = req.user.userId; 
 
@@ -11,8 +11,8 @@ exports.createTodo = async (req, res) => {
 
     try {
         const newTodo = await pool.query(
-            'Insert INTO todos (content, is_completed, user_id) VALUES ($1, $2, $3) RETURNING *',
-            [content, is_completed, userId]
+            'Insert INTO todos (content, is_completed, is_starred, user_id) VALUES ($1, $2, $3) RETURNING *',
+            [content, is_completed, is_starred, userId]
         );
         res.status(201).json(newTodo.rows[0]);
     } catch (err) {
@@ -44,7 +44,7 @@ exports.getAllTodos = async (req, res) => {
 exports.updateTodo = async (req, res) => {
     const userId = req.user.userId;
     const { id } = req.params;
-    const { content, is_completed } = req.body;
+    const { content, is_completed, is_starred } = req.body;
 
     console.log('Logged in user from token:', req.user);
     console.log('Request body:', req.body);
@@ -52,8 +52,8 @@ exports.updateTodo = async (req, res) => {
 
     try {
         const result = await pool.query(
-            'UPDATE todos SET content = $1, is_completed = $2 WHERE id = $3 AND user_id = $4 RETURNING *',
-            [content, is_completed, id, userId]
+            'UPDATE todos SET content = $1, is_completed = $2, is_starred = $3 WHERE id = $4 AND user_id = $5 RETURNING *',
+            [content, is_completed, is_starred, id, userId]
         );
 
         if (result.rows.length === 0) {
@@ -66,6 +66,7 @@ exports.updateTodo = async (req, res) => {
         res.status(500).json({ message: 'Server error during todo update' });
     }
 };
+
 // Delete an existing To-Do
 exports.deleteTodo = async (req, res) => {
     const userId = req.user.userId; 
