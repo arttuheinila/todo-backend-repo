@@ -11,7 +11,7 @@ exports.createTodo = async (req, res) => {
 
     try {
         const newTodo = await pool.query(
-            'Insert INTO todos (content, is_completed, is_starred, user_id) VALUES ($1, $2, $3) RETURNING *',
+            'Insert INTO todos (content, is_completed, is_starred, user_id) VALUES ($1, $2, $3, $4) RETURNING *',
             [content, is_completed, is_starred, userId]
         );
         res.status(201).json(newTodo.rows[0]);
