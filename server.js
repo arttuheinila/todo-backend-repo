@@ -8,7 +8,7 @@ const rateLimit = require("express-rate-limit");
 const app = express();
 app.use((req, res, next) => {
   console.log(req.method, req.path);
-  console.log(req.headers.authorization); // Log the Authorization header
+  console.log(req.headers.authorization);
   next();
 });
 
@@ -17,8 +17,8 @@ app.use(cors());
 
 // Limit requests from the same IP
 const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // limit each IP to 100 requests per windowMs
+  windowMs: 15 * 60 * 1000,
+  max: 100, 
   message:
     "Too many requests from this IP, please try again after 15 minutes",
 });
@@ -35,7 +35,7 @@ app.use((req, res, next) => {
   console.log('Incoming request:', req.method, req.path, req.headers);
   next();
 });
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

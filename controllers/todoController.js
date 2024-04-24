@@ -70,7 +70,7 @@ exports.updateTodo = async (req, res) => {
 // Delete an existing To-Do
 exports.deleteTodo = async (req, res) => {
     const userId = req.user.userId; 
-        const { id } = req.params;
+    const { id } = req.params;
  
     try {
         const deleteOp = await pool.query(
