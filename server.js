@@ -1,16 +1,21 @@
 require('dotenv').config();
 const express = require('express');
+const path = require('path');
 const userRoutes = require('./routes/userRoutes');
 const todoRoutes = require('./routes/todoRoutes');
 const cors = require('cors');
 const rateLimit = require("express-rate-limit");
 
 const app = express();
-app.use((req, res, next) => {
-  console.log(req.method, req.path);
-  console.log(req.headers.authorization);
-  next();
+
+// Serve static files from the React application
+app.use(express.static(path.join(__dirname, '..', 'build')));
+
+// Handles any requests that don't match the ones above
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'build', 'index.html'));
 });
+
 
 // Middleware to handle CORS requests
 app.use(cors({
