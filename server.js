@@ -13,7 +13,9 @@ app.use((req, res, next) => {
 });
 
 // Middleware to handle CORS requests
-app.use(cors());
+app.use(cors({
+  origin: "https://powerful-reef-86902-97c19a7b8321.herokuapp.com/"
+}));
 
 // Limit requests from the same IP
 const limiter = rateLimit({
