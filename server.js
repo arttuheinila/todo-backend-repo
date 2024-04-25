@@ -18,9 +18,12 @@ app.get('*', (req, res) => {
 
 
 // Middleware to handle CORS requests
-app.use(cors({
-  origin: "https://powerful-reef-86902-97c19a7b8321.herokuapp.com/"
-}));
+const corsOptions = {
+  origin: ['https://arttu.info', 'https://powerful-reef-86902-97c19a7b8321.herokuapp.com/'],
+  credentials: true,
+}
+
+app.use(cors(corsOptions));
 
 // Limit requests from the same IP
 const limiter = rateLimit({
