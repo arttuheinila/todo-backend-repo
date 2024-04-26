@@ -1,26 +1,19 @@
 require('dotenv').config();
 const express = require('express');
-const path = require('path');
+const cors = require('cors');
 const userRoutes = require('./routes/userRoutes');
 const todoRoutes = require('./routes/todoRoutes');
-const cors = require('cors');
 const rateLimit = require("express-rate-limit");
 
 const app = express();
 
-// Serve static files from the React application
-app.use(express.static(path.join(__dirname, '..', 'build')));
-
-// Handles any requests that don't match the ones above
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '..', 'build', 'index.html'));
-});
 
 
 // Middleware to handle CORS requests
 const corsOptions = {
   origin: ['https://arttu.info', 'https://powerful-reef-86902-97c19a7b8321.herokuapp.com/'],
   credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
 }
 
 app.use(cors(corsOptions));
@@ -45,6 +38,17 @@ app.use((req, res, next) => {
   console.log('Incoming request:', req.method, req.path, req.headers);
   next();
 });
+
+// Catch all for non-existent API routes
+app.all('*', (req, res) => {
+  res.status(404).json({ error: "Not found" });
+});
+
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ error: "Server error" });
+});
+
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
