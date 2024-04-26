@@ -7,7 +7,8 @@ const rateLimit = require("express-rate-limit");
 
 const app = express();
 
-
+// Trust the proxy to properly register the client's IP address
+app.set('trust proxy', 1); 
 
 // Middleware to handle CORS requests
 const corsOptions = {
@@ -46,7 +47,7 @@ app.all('*', (req, res) => {
 
 app.use((err, req, res, next) => {
   console.error(err.stack);
-  res.status(500).json({ error: "Server error" });
+  res.status(500).send({ error: "Something broke!" });
 });
 
 const PORT = process.env.PORT || 5000;
