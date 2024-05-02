@@ -1,30 +1,25 @@
-# Full Stack Todo Application
+# Todo Application Backend
 
-This repository contains a full stack Todo application with React on the frontend and Node.js/Express on the backend. The frontend is served from a separate repository which can be found [here](https://github.com/arttuheinila/todo-frontend-repo). The backend, handling API requests, is maintained in another repository available [here](https://github.com/arttuheinila/todo-backend-repo).
+This repository contains the backend code for the Todo Application built with Node.js and Express. It provides API services for the frontend which is maintained [here](https://github.com/arttuheinila/todo-frontend-repo/).
 Live site [here](https://arttu.info/todo)
 
-## Overview
+## Features
 
-The application allows users to manage their daily tasks effectively with features like adding, deleting, and marking tasks as complete.
+- REST API to manage todo items
+- Authentication endpoints
+- Integration with PostgreSQL database
 
-### Technologies
-
-- **Frontend:** React, HTML, CSS
-- **Backend:** Node.js, Express, PostgreSQL
-
-## Local Development
-
-To run this application locally, you need to clone both the frontend and backend repositories, set up the environment variables, and start both servers.
-
-### Clone the Repositories
+## Installation
 
 ```bash
-git clone https://github.com/yourusername/todo-frontend.git
 git clone https://github.com/yourusername/todo-backend.git
-Environment Setup
-Refer to the READMEs in each repository for detailed instructions on setting up and running each part of the application:
-    • Frontend README
-    • Backend README
+cd todo-backend
+npm install
+Running Locally
+Before running, ensure you have PostgreSQL installed and running, and update the .env file with the necessary database connection details.
+bash
+npm start
+This starts the backend server which listens for requests on http://localhost:5000.
 Deployment
-This application is deployed on Heroku. The frontend is hosted at https://arttu.info/todo and the backend at https://powerful-reef-86902.herokuapp.com.
-For more details on deployment, check the README files in the respective repositories.
+This backend is deployed on Heroku at the following URL:
+    • API Base URL: https://powerful-reef-86902.herokuapp.com
