@@ -12,7 +12,7 @@ app.set('trust proxy', 1);
 
 // Middleware to handle CORS requests
 const corsOptions = {
-  origin: ['https://arttu.info', 'https://powerful-reef-86902-97c19a7b8321.herokuapp.com/', 'https://todofrontendrepo.netlify.app'],
+  origin: ['https://arttu.info', 'https://powerful-reef-86902-97c19a7b8321.herokuapp.com/', 'https://todofrontendrepo.netlify.app', 'https://todo-backend-repo.onrender.com'],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
 }
